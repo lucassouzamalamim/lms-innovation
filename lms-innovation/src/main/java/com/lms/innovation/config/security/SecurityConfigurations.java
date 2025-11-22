@@ -40,6 +40,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/webhooks/**").permitAll() // Hotmart
                         .requestMatchers("/h2-console/**").permitAll() // Apenas para Dev
+                        .requestMatchers(HttpMethod.GET, "/courses/**").permitAll() // Listar e ver detalhes de cursos
                         .requestMatchers(HttpMethod.POST, "/api/courses").hasRole("ADMIN") // Só admin cria curso
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

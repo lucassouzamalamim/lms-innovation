@@ -1,6 +1,7 @@
 package com.lms.innovation.controller;
 
 import com.lms.innovation.dto.CourseDTO;
+import com.lms.innovation.dto.CourseDetailsDTO;
 import com.lms.innovation.model.Course;
 import com.lms.innovation.model.User;
 import com.lms.innovation.repository.CourseRepository;
@@ -23,6 +24,13 @@ public class CourseController {
     public ResponseEntity<List<CourseDTO>> listAll() {
         var courses = courseRepository.findAll().stream().map(CourseDTO::new).toList();
         return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CourseDetailsDTO> getCourseDetails(@PathVariable Long id) {
+        var course = courseRepository.findByIdWithModules(id)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+        return ResponseEntity.ok(new CourseDetailsDTO(course));
     }
 
     @PostMapping

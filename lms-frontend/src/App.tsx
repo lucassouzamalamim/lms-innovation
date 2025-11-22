@@ -3,6 +3,7 @@ import { AuthProvider, AuthContext } from './contexts/AuthContext'
 import { useContext } from 'react'
 import { Login } from './pages/Login'
 import { Dashboard } from './pages/Dashboard'
+import { CoursePlayer } from './pages/CoursePlayer'
 import { AppLayout } from './layouts/AppLayout'
 
 function PrivateRoutes() {
@@ -24,6 +25,9 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               {/* Futuros routes: /cursos, /aulas, etc */}
             </Route>
+
+            {/* Player de Vídeo (sem layout, tela cheia) */}
+            <Route path="/course/:courseId" element={<CoursePlayer />} />
           </Route>
 
         </Routes>

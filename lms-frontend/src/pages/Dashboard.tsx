@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "../services/api";
 import { PlayCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface Course {
     id: number;
@@ -12,6 +13,7 @@ interface Course {
 
 export function Dashboard() {
     const [courses, setCourses] = useState<Course[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Busca os cursos ao carregar a página
@@ -42,7 +44,10 @@ export function Dashboard() {
 
                             <div className="mt-4 flex items-center justify-between">
                                 <span className="text-xs text-gray-500">Prof. {course.professorNome}</span>
-                                <button className="flex items-center gap-2 text-purple-400 hover:text-purple-300 font-semibold text-sm">
+                                <button
+                                    onClick={() => navigate(`/course/${course.id}`)}
+                                    className="flex items-center gap-2 text-purple-400 hover:text-purple-300 font-semibold text-sm"
+                                >
                                     <PlayCircle size={16} />
                                     Acessar
                                 </button>
