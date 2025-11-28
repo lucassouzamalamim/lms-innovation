@@ -4,6 +4,9 @@ import { useContext } from 'react'
 import { Login } from './pages/Login'
 import { Register } from './pages/Register'
 import { Dashboard } from './pages/Dashboard'
+import { AdminDashboard } from './pages/AdminDashboard'
+import { CourseManagement } from './pages/CourseManagement'
+import { CourseForm } from './pages/CourseForm'
 import { CoursePlayer } from './pages/CoursePlayer'
 import { AppLayout } from './layouts/AppLayout'
 
@@ -25,7 +28,11 @@ function App() {
             {/* Envelopando com o Layout Visual */}
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<Dashboard />} />
-              {/* Futuros routes: /cursos, /aulas, etc */}
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/courses" element={<CourseManagement />} />
+              <Route path="/admin/courses/new" element={<CourseForm />} />
+              <Route path="/admin/courses/:id" element={<CourseForm />} />
+              {/* Futuros routes: /aulas, etc */}
             </Route>
 
             {/* Player de Vídeo (sem layout, tela cheia) */}

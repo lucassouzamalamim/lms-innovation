@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 export function AppLayout() {
-    const { signOut } = useContext(AuthContext);
+    const { signOut, user } = useContext(AuthContext);
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -76,6 +76,16 @@ export function AppLayout() {
                     <div className="pt-4 pb-2 px-3">
                         <p className="text-xs font-semibold text-gray-600 uppercase tracking-wider">Ferramentas</p>
                     </div>
+
+                    {user?.role === 'ADMIN' && (
+                        <Link
+                            to="/admin"
+                            className={`flex items-center gap-3 p-3 rounded-lg transition-all duration-200 group ${isActive('/admin') ? 'bg-white text-black font-medium' : 'text-gray-400 hover:bg-gray-900 hover:text-white'}`}
+                        >
+                            <LayoutDashboard size={20} className={isActive('/admin') ? 'text-black' : 'text-gray-500 group-hover:text-white'} />
+                            Administração
+                        </Link>
+                    )}
 
                     <Link
                         to="/gerador-ia"

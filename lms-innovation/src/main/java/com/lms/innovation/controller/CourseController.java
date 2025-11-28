@@ -48,6 +48,28 @@ public class CourseController {
         newCourse.setDataCriacao(java.time.LocalDateTime.now());
 
         courseRepository.save(newCourse);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        courseRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody CourseDTO data) {
+        var course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado"));
+
+        course.setTitulo(data.titulo());
+        course.setSlug(data.slug());
+        course.setDescricao(data.descricao());
+        course.setBannerUrl(data.bannerUrl());
+
+        courseRepository.save(course);
 
         return ResponseEntity.ok().build();
     }

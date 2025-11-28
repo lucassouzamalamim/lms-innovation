@@ -43,4 +43,25 @@ public class ModuleController {
 
         return ResponseEntity.ok(new ModuleDTO(savedModule));
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        moduleRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ModuleDTO> update(@PathVariable Long id, @RequestBody CreateModuleDTO data) {
+        var module = moduleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Módulo não encontrado"));
+
+        module.setTitulo(data.titulo());
+        module.setOrdem(data.ordem());
+
+        var savedModule = moduleRepository.save(module);
+
+        return ResponseEntity.ok(new ModuleDTO(savedModule));
+    }
 }

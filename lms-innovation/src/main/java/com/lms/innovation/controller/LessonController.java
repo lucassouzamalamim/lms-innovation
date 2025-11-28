@@ -47,4 +47,29 @@ public class LessonController {
 
         return ResponseEntity.ok(new LessonDTO(savedLesson));
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        lessonRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<LessonDTO> update(@PathVariable Long id, @RequestBody CreateLessonDTO data) {
+        var lesson = lessonRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Aula não encontrada"));
+
+        lesson.setTitulo(data.titulo());
+        lesson.setDescricao(data.descricao());
+        lesson.setVideoEmbedUrl(data.videoEmbedUrl());
+        lesson.setDuracaoSegundos(data.duracaoSegundos());
+        lesson.setOrdem(data.ordem());
+        lesson.setMaterialApoioUrl(data.materialApoioUrl());
+
+        var savedLesson = lessonRepository.save(lesson);
+
+        return ResponseEntity.ok(new LessonDTO(savedLesson));
+    }
 }
