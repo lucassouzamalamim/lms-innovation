@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom
 import { AuthProvider, AuthContext } from './contexts/AuthContext'
 import { useContext } from 'react'
 import { Login } from './pages/Login'
+import { Register } from './pages/Register'
 import { Dashboard } from './pages/Dashboard'
 import { CoursePlayer } from './pages/CoursePlayer'
 import { AppLayout } from './layouts/AppLayout'
@@ -17,6 +18,7 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           {/* Rotas Protegidas */}
           <Route element={<PrivateRoutes />}>

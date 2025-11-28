@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { Lock, Mail, ArrowRight } from 'lucide-react'
 
 export function Login() {
@@ -104,7 +104,7 @@ export function Login() {
 
         <div className="mt-6 text-center">
           <p className="text-gray-500 text-xs">
-            Não tem uma conta? <a href="#" className="text-purple-400 hover:text-purple-300 transition-colors">Fale com o suporte</a>
+            Não tem uma conta? <Link to="/register" className="text-purple-400 hover:text-purple-300 transition-colors">Crie sua conta</Link>
           </p>
         </div>
       </div>
