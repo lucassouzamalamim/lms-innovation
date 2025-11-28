@@ -1,34 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom'
+import { AuthProvider, AuthContext } from './contexts/AuthContext'
+import { useContext } from 'react'
+import { Login } from './pages/Login'
+import { Register } from './pages/Register'
+import { Dashboard } from './pages/Dashboard'
+import { AdminDashboard } from './pages/AdminDashboard'
+import { CourseManagement } from './pages/CourseManagement'
+import { CourseForm } from './pages/CourseForm'
+import { CoursePlayer } from './pages/CoursePlayer'
+import { AppLayout } from './layouts/AppLayout'
+
+function PrivateRoutes() {
+  const { isAuthenticated } = useContext(AuthContext)
+  return isAuthenticated ? <Outlet /> : <Navigate to="/" />
+}
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Rotas Protegidas */}
+          <Route element={<PrivateRoutes />}>
+            {/* Envelopando com o Layout Visual */}
+            <Route element={<AppLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/courses" element={<CourseManagement />} />
+              <Route path="/admin/courses/new" element={<CourseForm />} />
+              <Route path="/admin/courses/:id" element={<CourseForm />} />
+              {/* Futuros routes: /aulas, etc */}
+            </Route>
+
+            {/* Player de Vídeo (sem layout, tela cheia) */}
+            <Route path="/course/:courseId" element={<CoursePlayer />} />
+          </Route>
+
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   )
 }
 
