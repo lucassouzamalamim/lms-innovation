@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../services/api";
 import { ChevronDown, ChevronRight, PlayCircle, Clock, BookOpen, Menu, LogOut } from "lucide-react";
 import { DoubtsSection } from "../components/DoubtsSection";
+import { StarRating } from "../components/StarRating";
 
 interface Lesson {
     id: number;
@@ -24,6 +25,12 @@ interface CourseDetails {
     modules: Module[];
 }
 
+interface RatingData {
+    userRating: number;
+    averageRating: number;
+    totalRatings: number;
+}
+
 export function CoursePlayer() {
     const { courseId } = useParams<{ courseId: string }>();
     const navigate = useNavigate();
@@ -33,6 +40,7 @@ export function CoursePlayer() {
     const [expandedModules, setExpandedModules] = useState<number[]>([]);
     const [loading, setLoading] = useState(true);
     const [sidebarOpen, setSidebarOpen] = useState(true);
+    const [ratingData, setRatingData] = useState<RatingData | null>(null);
 
     useEffect(() => {
         if (!courseId) return;
@@ -56,6 +64,18 @@ export function CoursePlayer() {
                 setLoading(false);
             });
     }, [courseId]);
+
+    useEffect(() => {
+        if (!currentLesson) return;
+        setRatingData(null); // Reset while loading
+        api.get(`/lessons/${currentLesson.id}/rating`)
+            .then(response => {
+                setRatingData(response.data);
+            })
+            .catch(error => {
+                console.error("Erro ao buscar avaliações", error);
+            });
+    }, [currentLesson]);
 
     const toggleModule = (moduleId: number) => {
         setExpandedModules(prev =>
@@ -161,13 +181,24 @@ export function CoursePlayer() {
                                 </div>
                             </div>
 
-                            <button
-                                onClick={() => navigate('/dashboard')}
-                                className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-gray-700"
-                            >
-                                <LogOut size={16} />
-                                Sair do Curso
-                            </button>
+                            <div className="flex flex-col items-end gap-2">
+                                {currentLesson && ratingData && (
+                                    <StarRating
+                                        key={currentLesson.id}
+                                        lessonId={currentLesson.id}
+                                        initialStars={ratingData.userRating}
+                                        initialAverage={ratingData.averageRating}
+                                        totalRatings={ratingData.totalRatings}
+                                    />
+                                )}
+                                <button
+                                    onClick={() => navigate('/dashboard')}
+                                    className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white transition-colors px-4 py-2 rounded-lg hover:bg-gray-700"
+                                >
+                                    <LogOut size={16} />
+                                    Sair do Curso
+                                </button>
+                            </div>
                         </div>
                     </div>
 
