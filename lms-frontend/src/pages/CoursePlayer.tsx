@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { api } from "../services/api";
 import { ChevronDown, ChevronRight, PlayCircle, Clock, BookOpen, Menu, LogOut } from "lucide-react";
+import { DoubtsSection } from "../components/DoubtsSection";
 
 interface Lesson {
     id: number;
@@ -104,21 +105,21 @@ export function CoursePlayer() {
     return (
         <div className="flex h-screen bg-gray-900 text-white overflow-hidden font-sans">
             {/* Área Principal */}
-            <div className="flex-1 flex flex-col h-full relative transition-all duration-300 ease-in-out">
+            <div className="flex-1 h-full overflow-y-auto relative bg-gray-900 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent">
                 {/* Header Mobile / Toggle Sidebar */}
-                <div className="absolute top-4 left-4 z-20 md:hidden">
+                <div className="absolute top-4 left-4 z-30 md:hidden">
                     <button
                         onClick={() => setSidebarOpen(!sidebarOpen)}
-                        className="p-2 bg-gray-800 rounded-lg shadow-lg text-gray-300 hover:text-white"
+                        className="p-2 bg-gray-800/90 backdrop-blur rounded-lg shadow-lg text-gray-300 hover:text-white border border-gray-700"
                     >
                         <Menu size={24} />
                     </button>
                 </div>
 
                 {/* Player de Vídeo */}
-                <div className="flex-1 bg-black relative flex items-center justify-center shadow-2xl z-10">
+                <div className="w-full aspect-video bg-black relative flex items-center justify-center shadow-2xl z-20 flex-shrink-0">
                     {currentLesson ? (
-                        <div className="w-full h-full max-w-[1600px] mx-auto relative group">
+                        <div className="w-full h-full relative group">
                             <iframe
                                 src={currentLesson.videoEmbedUrl}
                                 title={currentLesson.titulo}
@@ -126,8 +127,6 @@ export function CoursePlayer() {
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowFullScreen
                             />
-                            {/* Overlay gradiente sutil nas bordas */}
-                            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(0,0,0,0.5)]"></div>
                         </div>
                     ) : (
                         <div className="text-center p-8">
@@ -171,6 +170,13 @@ export function CoursePlayer() {
                             </button>
                         </div>
                     </div>
+
+                    {/* Doubts Section */}
+                    {currentLesson && (
+                        <div className="max-w-5xl mx-auto mt-8">
+                            <DoubtsSection lessonId={currentLesson.id} />
+                        </div>
+                    )}
                 </div>
             </div>
 
