@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { api } from '../services/api'
-import { Plus, Trash, Edit, ChevronDown, ChevronUp, Video, FileText } from 'lucide-react'
+import { Plus, Trash, Edit, ChevronDown, ChevronUp, Video } from 'lucide-react'
 
 type Lesson = {
     id: number
