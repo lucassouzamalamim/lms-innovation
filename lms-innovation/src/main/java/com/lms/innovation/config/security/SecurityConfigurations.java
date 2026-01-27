@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +37,7 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/webhooks/**").permitAll() // Hotmart
+                        .requestMatchers(HttpMethod.POST, "/webhook/**").permitAll() // Hotmart
                         .requestMatchers("/h2-console/**").permitAll() // Apenas para Dev
                         .requestMatchers(HttpMethod.GET, "/courses/**").permitAll() // Listar e ver detalhes de cursos
                         .requestMatchers(HttpMethod.POST, "/api/courses").hasRole("ADMIN") // Só admin cria curso
